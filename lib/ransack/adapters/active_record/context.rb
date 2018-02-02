@@ -5,12 +5,18 @@ require 'polyamorous'
 module Ransack
   module Adapters
     module ActiveRecord
+      class JoinDependency < ::ActiveRecord::Associations::JoinDependency
+        def join_root
+          super
+        end
+      end
+
       class Context < ::Ransack::Context
 
         # Because the AR::Associations namespace is insane
-        if defined? ::ActiveRecord::Associations::JoinDependency
-          JoinDependency = ::ActiveRecord::Associations::JoinDependency
-        end
+        #if defined? ::ActiveRecord::Associations::JoinDependency
+          #JoinDependency = ::ActiveRecord::Associations::JoinDependency
+        #end
 
         def initialize(object, options = {})
           super
@@ -284,7 +290,7 @@ module Ransack
             relation.klass,
             association_joins,
             join_list,
-            ActiveRecord::Associations::AliasTracker.create(relation.klass.connection, join_list)
+            ::ActiveRecord::Associations::AliasTracker.create(relation.klass.connection, relation.klass.table_name, join_list)
           )
 
           join_nodes.each do |join|

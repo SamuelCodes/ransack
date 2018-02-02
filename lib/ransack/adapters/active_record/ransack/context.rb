@@ -32,7 +32,7 @@ module Ransack
 
       if ::ActiveRecord::VERSION::STRING >= Constants::RAILS_4_1
         @base = @join_dependency.join_root
-        @engine = @base.base_klass.arel_engine
+        @engine = @base.base_klass.all.arel
       else
         @base = @join_dependency.join_base
         @engine = @base.arel_engine
