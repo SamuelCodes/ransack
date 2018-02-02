@@ -281,7 +281,10 @@ module Ransack
             end
 
           join_dependency = JoinDependency.new(
-            relation.klass, association_joins, join_list
+            relation.klass,
+            association_joins,
+            join_list,
+            ActiveRecord::Associations::AliasTracker.create(relation.klass.connection, join_list)
           )
 
           join_nodes.each do |join|
